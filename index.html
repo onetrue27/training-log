@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>筋トレ記録</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>筋トレ記録</h1>
+
+    <div id = "calendar">
+        <div id = "calendar-header">
+            <button type = "button" id = "prev-month-btn">‹</button>
+            <span id = "calendar-month-label"></span>
+            <button type = "button" id = "next-month-btn">›</button>
+        </div>
+        <div id = "calendar-grid"></div>
+    </div>
+
+    <div id = "day-detail"></div>
+
+    <form id = "record-form" autocomplete="off">
+        <div class="date-wrapper">
+            <input type = "date" id = "date" >
+            <span class = "date-placeholder" id="date-placeholder">年/月/日</span>
+        </div>
+
+        <input type = "text" id = "exercise-name" placeholder="種目" autocomplete="off"><ul id = "exercise-suggestions"></ul>
+        <div id = "exercise-history"></div>
+
+        <div id = "set-list"></div>
+
+        <div id = "set-btns">
+            <button type = "button" id = "add-set-btn">+ セットを追加</button>
+            <button type = "button" id = "duplicate-set-btn">+ セットを複製</button>
+            <button type = "button" id = "delete-set-btn">- セットを削除</button>
+        </div>
+        <button type = "submit" id="submit-btn">記録する</button>
+    </form>
+
+    <div id = "message"></div>
+
+    <script src = "script.js"></script>
+
+</body>

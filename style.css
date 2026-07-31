@@ -1,0 +1,347 @@
+:root {
+  --bg: #ffffff;
+  --surface: #f7f7f8;
+  --border: #e7e5e4;
+  --text: #1c1c1e;
+  --text-secondary: #7a7a7d;
+  --crimson: #dc143c;
+  --crimson-soft: rgba(220, 20, 60, 0.08);
+  --crimson-soft-2: rgba(220, 20, 60, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 32px 20px 60px;
+  max-width: 480px;
+  margin-inline: auto;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, "Hiragino Sans", "Yu Gothic", sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* プレート（重り)をイメージした、見出し下のワンポイント装飾 */
+h1::after {
+  content: "";
+  display: block;
+  width: 130px;
+  height: 6px;
+  margin-bottom: 20px;
+  border-radius: 3px;
+  background: repeating-linear-gradient(90deg,var(--crimson) 0 10px,transparent 10px 15px
+  );
+}
+
+#calendar {
+  margin-bottom: 20px;
+}
+
+#calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+#calendar-header button {
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+  color: var(--crimson);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#calendar-month-label {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+#calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-weekday {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+  padding: 6px 0;
+}
+
+.calendar-day {
+  position: relative;
+  aspect-ratio: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.calendar-day:hover {
+  background: var(--crimson-soft);
+}
+
+.calendar-day-empty {
+  cursor: default;
+}
+
+.calendar-day-empty:hover {
+  background: none;
+}
+
+.calendar-dot {
+  position: absolute;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: var(--crimson-soft-2);
+}
+
+#day-detail h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+#day-detail {
+  margin-bottom: 12px;
+}
+
+#day-detail:empty {
+  display: none;
+  margin-bottom: 0;
+}
+
+.day-detail-exercise {
+  padding: 4px 12px;
+  margin-bottom: 8px;
+  background: var(--surface);
+  border-radius: 8px;
+  font-size: 10px;
+  line-height: 1.8;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* デフォルトは常に透明（隠す） */
+input[type="date"]::-webkit-datetime-edit-text,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+  color: transparent;
+}
+
+/* 値が入っている時、または操作中(フォーカス中)は文字を見せる */
+.date-wrapper.has-value input[type="date"]::-webkit-datetime-edit-text,
+.date-wrapper.has-value input[type="date"]::-webkit-datetime-edit-month-field,
+.date-wrapper.has-value input[type="date"]::-webkit-datetime-edit-day-field,
+.date-wrapper.has-value input[type="date"]::-webkit-datetime-edit-year-field,
+.date-wrapper:focus-within input[type="date"]::-webkit-datetime-edit-text,
+.date-wrapper:focus-within input[type="date"]::-webkit-datetime-edit-month-field,
+.date-wrapper:focus-within input[type="date"]::-webkit-datetime-edit-day-field,
+.date-wrapper:focus-within input[type="date"]::-webkit-datetime-edit-year-field {
+  color: var(--text);
+}
+
+input[type="date"],
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  height: 40px;
+  padding: 0px 14px;
+  font-size: 16px;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.date-wrapper {
+  position: relative;
+}
+
+.date-placeholder {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  font-size: 16px;
+  font-family: inherit;
+  pointer-events: none; /* クリックが下の input にそのまま届くようにする */
+}
+
+.date-wrapper:focus-within .date-placeholder {
+  display: none !important;
+}
+
+input[type="date"]:focus,
+input[type="text"]:focus,
+input[type="number"]:focus {
+  border-color: var(--crimson);
+  background: var(--bg);
+}
+
+input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* 種目名の入力候補リスト */
+#exercise-suggestions {
+  list-style: none;
+  margin: -8px 0 0;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+#exercise-suggestions:empty {
+  display: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+#exercise-suggestions li {
+  padding: 10px 12px;
+  font-size: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#exercise-suggestions li:hover {
+  background: var(--crimson-soft);
+  color: var(--crimson);
+}
+
+/* 前回記録・自己ベストの表示エリア */
+#exercise-history {
+  padding: 14px 16px;
+  border-left: 3px solid var(--crimson);
+  background: var(--crimson-soft);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.8;
+}
+
+#exercise-history:empty {
+  display: none;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+/* セットの入力行 */
+#set-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.set-row {
+  display: flex;
+  gap: 10px;
+}
+
+.set-row input {
+  flex: 1;
+}
+
+#set-btns {
+  display: flex;
+  gap: 8px;
+}
+
+#set-btns button {
+  flex: 1;
+}
+/* セット追加ボタン：控えめな点線スタイル */
+#add-set-btn,#duplicate-set-btn,#delete-set-btn {
+  padding: 12px;
+  font-size: 12px;
+  font-family: inherit;
+  color: var(--crimson);
+  background: var(--bg);
+  border: 1.5px dashed var(--crimson-soft-2);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+#add-set-btn:hover,
+#duplicate-set-btn:hover,
+#delete-set-btn:hover {
+  background: var(--crimson-soft);
+  border-color: var(--crimson);
+}
+
+/* 記録するボタン：メインCTA */
+button[type="submit"] {
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  color: #fff;
+  background: var(--crimson);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: opacity 0.15s ease;
+}
+
+button[type="submit"]:active {
+  opacity: 0.85;
+}
+
+button[type="submit"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 保存中・成功・失敗のメッセージ */
+#message {
+  padding: 10px 14px;
+  font-size: 14px;
+  text-align: center;
+  color: var(--crimson);
+  background: var(--crimson-soft);
+  border-radius: 8px;
+}
+
+#message:empty {
+  display: none;
+  padding: 0;
+  background: none;
+}
