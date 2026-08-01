@@ -149,8 +149,6 @@ function showDayDetail(dateKey){
         grouped[record.exercise].push(record);
     });
 
-    console.log(dayRecords);
-
     let html = `<h3>${formatDateForDisplay(dayRecords[0].date)}の記録</h3>`;
 
     for (const exercise in grouped){
