@@ -2,6 +2,8 @@ const dateInput = document.getElementById("date");
 const exerciseInput = document.getElementById("exercise-name");
 const form = document.getElementById("record-form"); 
 
+
+//プレースホルダ
 function updateDatePlaceholder() {
   const placeholder = document.getElementById("date-placeholder");
   const wrapper = document.querySelector(".date-wrapper");
@@ -36,6 +38,7 @@ fetch("https://script.google.com/macros/s/AKfycbxbl1HbkM3u6cw5TQFE7X_UlKLuGroRGW
     renderCalendar(currentYear, currentMonth);
   });
 
+
 //日付をキーとして扱う関数
 function getDateKey(dateString){
     const date = new Date(dateString);
@@ -56,7 +59,7 @@ function renderCalendar(year, month){
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month +1, 0);
     const daysInMonth = lastDay.getDate();
-    const startWeekday = firstDay.getDate();
+    const startWeekday = firstDay.getDay();
 
     const dateKeysWithRecords = new Set(allRecords.map(function(r){return getDateKey(r.date);}));
 
@@ -146,10 +149,17 @@ function showDayDetail(dateKey){
         grouped[record.exercise].push(record);
     });
 
+    console.log(dayRecords);
+
     let html = `<h3>${formatDateForDisplay(dayRecords[0].date)}の記録</h3>`;
 
     for (const exercise in grouped){
-        html += `<div class = "day-detail-exercise"><strong>${exercise}</strong><br>`;
+        const rawData = grouped[exercise][0].date;
+        html += `<div class = "day-detail-exercise">
+        <div class = "exercise-header">
+            <strong>${exercise}</strong>
+            <button type = "button" class = "delete-exercise-btn" data-date = "${rawData}" data-exercise = "${exercise}">削除</button>
+        </div>`;
         grouped[exercise].forEach(function(set){
             html += `${set.setNumber}セット目: ${set.weight}kg ${set.reps}回<br>`;
         });
@@ -160,7 +170,33 @@ function showDayDetail(dateKey){
     detail.dataset.currentDate = dateKey;
 }
 
+function deleteExerciseRecord(date, exercise) {
+    fetch("https://script.google.com/macros/s/AKfycbxbl1HbkM3u6cw5TQFE7X_UlKLuGroRGWkVKS98M_ubUm1kr7VOv8OMpY7JhOa6nSe8/exec", {
+        method: "POST",
+        body: JSON.stringify({ action: "delete", date: date, exercise: exercise }),
+    })
+    .then(function(response) { return response.json(); })
+    .then(function(result) {
+        if (result.status === "success") {
+            allRecords = allRecords.filter(function(r) {
+                return !(r.date === date && r.exercise === exercise);
+            });
+            renderCalendar(currentYear, currentMonth);
+            showDayDetail(getDateKey(date));
+        }
+    });
+}
 
+document.getElementById("day-detail").addEventListener("click", function(event) {
+    if (event.target.classList.contains("delete-exercise-btn")) {
+        const date = event.target.dataset.date;
+        const exercise = event.target.dataset.exercise;
+
+        if (confirm(`${exercise}の記録を削除しますか？`)) {
+            deleteExerciseRecord(date, exercise);
+        }
+    }
+});
 
 //候補の表示関数
 function showSuggestions(matches) {
