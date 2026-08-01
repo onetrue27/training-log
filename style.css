@@ -262,6 +262,27 @@ input::placeholder {
   background: none;
 }
 
+.exercise-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.delete-exercise-btn {
+  padding: 1px 10px;
+  font-size: 12px;
+  color: var(--crimson);
+  background: var(--bg);
+  border: 1px solid var(--crimson-soft-2);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-exercise-btn:hover {
+  background: var(--crimson-soft);
+}
+
 /* セットの入力行 */
 #set-list {
   display: flex;
