@@ -149,6 +149,7 @@ function showDayDetail(dateKey){
         grouped[record.exercise].push(record);
     });
 
+
     let html = `<h3>${formatDateForDisplay(dayRecords[0].date)}の記録</h3>`;
 
     for (const exercise in grouped){
@@ -169,6 +170,8 @@ function showDayDetail(dateKey){
 }
 
 function deleteExerciseRecord(date, exercise) {
+    console.log("送信するdate:", date);
+    console.log("送信するexercise:", exercise);
     fetch("https://script.google.com/macros/s/AKfycbxbl1HbkM3u6cw5TQFE7X_UlKLuGroRGWkVKS98M_ubUm1kr7VOv8OMpY7JhOa6nSe8/exec", {
         method: "POST",
         body: JSON.stringify({ action: "delete", date: date, exercise: exercise }),
@@ -290,7 +293,7 @@ function addSetRow(weightValue = "", repsValue = "") {
     const row = document.createElement("div");
     row.className = "set-row";
     row.innerHTML = `
-        <input type="number" placeholder="重量(kg)" class="weight-input" autocomplete="off">
+        <input type="number" placeholder="重量(kg)" class="weight-input" autocomplete="off" step="any">
         <input type="number" placeholder="レップ数" class="reps-input" autocomplete="off">
     `;
     document.getElementById("set-list").appendChild(row);
