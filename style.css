@@ -77,6 +77,13 @@ h1::after {
   gap: 4px;
 }
 
+#calendar-loading {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
 .calendar-weekday {
   text-align: center;
   font-size: 12px;
